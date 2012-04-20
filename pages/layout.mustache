@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    {{#pageTitle}}
+      <title>{{pageTitle}}</title>
+    {{/pageTitle}}
+
+    {{#user}}
+      <script>window.config = {user: {{{user}}} }</script>
+    {{/user}}
+    {{^user}}
+      <script>window.config = {user: {} }</script>
+    {{/user}}
+
+    {{#metaDescription}}
+      <meta name="description" content="{{metaDescription}}">
+    {{/metaDescription}}
+
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="Shortcut Icon" href="/img/favicon.ico">
+    <link href='http://fonts.googleapis.com/css?family=Ovo' rel='stylesheet' type='text/css'>
+    <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+    <script data-main="/js/main-built" src="/js/libs/require/require.js"></script>
+  </head>
+  <body>
+    <div class="container"> 
+      <header>
+      <a href="/" class="brand">SaveWaterProject</a>
+      <ul class="main-nav">
+        <li><a href="/toilets">Our Toilets</a></li>
+        <li><a href="/faq">F.A.Q.</a></li>
+        <li><a href="/about">About Us</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+      </header>
+      <div id="app"></div>
+    <footer>
+      <ul class="nav nav-pills">
+        <li><a href="/">Home</a></li>
+        <li><a href="/toilets">Our Toilets</a></li>
+        <li><a href="/faq">F.A.Q.</a></li>
+        <li><a href="/about">About Us</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+      <div class="details">	
+        Copyright &copy;{{year}}
+        <br> info@savewaterproject.com
+      </div>
+    </footer>
+    </div>
+
+
+
+  </body>
+</html>

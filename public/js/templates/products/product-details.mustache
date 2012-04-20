@@ -1,0 +1,29 @@
+<h2>Product Details</h2>
+<form method="post" action="#">
+  <label>Name</label>
+  <input class="span3" name="name" value={{name}}>
+
+  <label>Price</label>
+  <input class="span3" name="price" value={{price}}>
+
+  <label>Order</label>
+  <input class="span3" name="order" value={{order}}>
+
+
+  <label>Description</label>
+  <textarea class="span3" name="description">{{description}}</textarea>
+
+  <label>Dimensions</label>
+  <textarea class="span3" name="dimensions">{{dimensions}}</textarea>
+
+
+  <label>Category</label>
+  <select class="span3" name="category">
+    <option value="">-- Select Category --</option>
+    {{#categories}}
+      <option value="{{slug}}" {{#selected}}selected="selected"{{/selected}}>{{name}}</option>
+    {{/categories}}
+  </select>
+  <button class="btn" type="submit">Save</button>
+</form>
+

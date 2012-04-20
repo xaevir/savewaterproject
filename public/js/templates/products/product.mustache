@@ -1,0 +1,22 @@
+<div class="product-title">
+  <h1>{{name}}</h1>
+  <h2>Dual Flush Toilet</h2>
+</div>
+<div class="row">
+  <div class="span6">
+    <div class="description">{{{description}}}</div>
+    <div class="price">Price: <span>${{{price}}}</span></div>
+    <div class="dimensions">
+      <h3>Dimensions</h3> 
+      {{{dimensions}}}
+    </div>
+  </div>          
+
+
+  <div class="span6">
+    {{#mainImage}}
+      <img alt="{{name}}" src="/files/{{medium}}" class="main"/>
+    {{/mainImage}} 
+  </div>
+</div>
+
