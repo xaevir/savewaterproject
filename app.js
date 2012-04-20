@@ -419,6 +419,6 @@ app.post('/upload/:product_id', restrict, function(req, res){
   }
 })
 
-app.listen(3000);
+app.listen(8050);
 
-console.log("Express server listening on port 3000");
+console.log("Express server listening on port 8050");
