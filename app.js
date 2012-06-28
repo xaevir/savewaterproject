@@ -17,16 +17,19 @@ var smtpTransport = nodemailer.createTransport("SMTP",{
 
 var staticServer = express.static(__dirname + '/public')
 
-var app = module.exports = express.createServer();
+
+var app = express();
 
 app.configure(function(){
+  app.set('port', process.env.PORT || 8050);
   app.set('views', __dirname + '/pages');
   //app.set('view engine', 'mustache');
   app.set('view options', { layout: false });
   app.use(express.bodyParser());
-  app.use(express.cookieParser('robin'));
-  app.use(express.session({ secret: "batman", store: new RedisStore }));
+  app.use(express.cookieParser('shhhh, very secret'));
+  app.use(express.session({store: new RedisStore }));
   app.use(app.router);
+
 })
 
 app.configure('development', function(){
@@ -41,9 +44,13 @@ app.configure('production', function(){
 
 /* redirect from www */
 app.get('/*', function(req, res, next) {
-  if (req.headers.host.match(/^www/) !== null ) res.redirect('http://' + req.headers.host.replace(/^www\./, '') + req.url, 301);
+  if (req.headers.host.match(/^www/) !== null ) {
+    var new_url = 'http://' + req.headers.host.replace(/^www\./, '') + req.url
+    res.redirect(301, new_url);
+  }
   else next();
 });
+
 
 app.get('/css/*', function(req, res, next) {
   staticServer(req, res, next)  
@@ -120,6 +127,8 @@ function getUser(session){
 
 /* force xhr */
 app.get('/*', function(req, res, next) { 
+  var hi = req.ips
+  var h0i = req.ip
   if (!(req.xhr)){
     render('layout.mustache', {user: getUser(req.session), year: new Date().getFullYear() }, function(err, html){
       res.send(html)
@@ -419,6 +428,6 @@ app.post('/upload/:product_id', restrict, function(req, res){
   }
 })
 
-app.listen(8050);
-
-console.log("Express server listening on port 8050");
+http.createServer(app).listen(app.get('port'), function(){
+  console.log("Express server listening on port " + app.get('port'));
+});
