@@ -6,7 +6,7 @@
     "start": "node app"
   },
   "dependencies": {
-      "express": "2.5.5"
+      "express": "3.0.0beta4"
     , "connect-redis": "latest"
     , "bcrypt": "latest"
     , "mongoskin": "latest"
