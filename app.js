@@ -9,6 +9,10 @@ var express = require('express')
   , imagemagick = require('imagemagick')
   , check = require('validator').check
   , GridStore = require('mongodb').GridStore
+  , jsdom = require("jsdom").jsdom
+
+var XMLHttpRequest = require("node-XMLHttpRequest").XMLHttpRequest;
+var xhr = new XMLHttpRequest();
 
 var smtpTransport = nodemailer.createTransport("SMTP",{
     host: "localhost",
@@ -125,19 +129,57 @@ function getUser(session){
   }
   return user
 }
+ 
+
 
 /* force xhr */
 app.get('/*', function(req, res, next) { 
-  var hi = req.ips
-  var h0i = req.ip
+  if (req.url == '/contact')
+    return next()
   if (!(req.xhr)){
-    render('layout.mustache', {user: getUser(req.session), year: new Date().getFullYear() }, function(err, html){
+    var development = (app.settings.env == 'development') ? true : false 
+    render('layout.mustache', { user: getUser(req.session), 
+                                year: new Date().getFullYear(),
+                                development: development}, function(err, html){
       res.send(html)
     })
   }
   else 
     next()
 })
+
+function createStaticPage(req, res, next) {
+  if (typeof(window) === 'undefined'){
+    var string = fs.readFileSync(__dirname + '/pages/layout.mustache', 'utf8');
+    var tpl = hogan.compile(string);
+    var locals = {user: getUser({user:false}), year: new Date().getFullYear() }
+    var html = tpl.render(locals)
+
+    var doc = jsdom(html, null, {
+      features: {
+        FetchExternalResources : ['script'],
+        ProcessExternalResources : ['script'],
+        MutationEvents           : '2.0',
+        QuerySelector            : false
+      }
+    });
+  // it cant load those scripts bc overwrite xhr. I wish I could see the console and error messages
+    var window = doc.createWindow();
+    window.XMLHttpRequest = XMLHttpRequest;
+    jsdom.jQueryify(window, __dirname + '/public/js/libs/jquery/jquery.js', function() {
+        console.log(window.$('html').html()); //jquery version
+    });
+
+  }
+/*
+  $('#app').addEventListener("DOMSubtreeModified", function (ev) {
+    console.log('app el changed')  
+    var x = $('#app')
+  }, false);
+
+  window.history.pushState({}, "", "contact");
+*/
+}
 
 function restrict(req, res, next) {
   if (req.session.user) {
@@ -164,6 +206,22 @@ app.get('/about', function(req, res){
     res.send({body: html, title: 'About Us - Save Water Project'})
   })
 })
+
+app.get('/contact', function(req, res){
+  render('contact.html', {}, function(err, contact_html){
+    var development = (app.settings.env == 'development') ? true : false 
+    render('layout.mustache', { user: getUser(req.session), 
+                                year: new Date().getFullYear(), 
+                                app: contact_html,
+                                pageTitle: {pageTitle: 'Contact Us'},
+                                development: development  
+                               }, function(err, html){
+      res.send(html)
+    })
+  })
+})
+
+
 
 app.post('/session', function(req, res) {
   var key

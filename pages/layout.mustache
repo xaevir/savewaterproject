@@ -21,11 +21,16 @@
     <link rel="Shortcut Icon" href="/img/favicon.ico">
     <link href='http://fonts.googleapis.com/css?family=Ovo' rel='stylesheet' type='text/css'>
     <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-    <script data-main="/js/main-built" src="/js/libs/require/require.js"></script>
+    {{#development}}
+      <script data-main="/js/main" src="/js/libs/require/require.js"></script>
+    {{/development}}
+    {{^development}}
+      <script data-main="/js/main-built" src="/js/libs/require/require.js"></script>
+    {{/development}}
   </head>
   <body>
     <div class="container"> 
-      <header>
+      <header id ="nav-container">
       <a href="/" class="brand">SaveWaterProject</a>
       <ul class="main-nav">
         <li><a href="/toilets">Our Toilets</a></li>
@@ -34,7 +39,7 @@
         <li><a href="/contact">Contact</a></li>
       </ul>
       </header>
-      <div id="app"></div>
+      <div id="app">{{{app}}}</div>
     <footer>
       <ul class="nav nav-pills">
         <li><a href="/">Home</a></li>

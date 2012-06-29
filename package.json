@@ -20,5 +20,6 @@
     , "imagemagick" : "latest"
     , "validator": "latest"
     , "mongodb": "latest"
+    , "jsdom": "latest"
   }
 }

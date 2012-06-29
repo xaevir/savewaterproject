@@ -3,6 +3,7 @@ define(function(require) {
 var Router = require('router')
   , User = require('models/user')
   , UserMenu = require('views/navbar/user-menu')         
+  , NavBar = require('views/navbar/navbar')         
 
   var initialize = function(){
      
@@ -14,6 +15,9 @@ var Router = require('router')
 
     var userMenu = new UserMenu()
     userMenu.render()
+
+    var navBar = new NavBar()
+    navBar.render()
 
     var router = new Router()
     Backbone.history.start({pushState: true});
