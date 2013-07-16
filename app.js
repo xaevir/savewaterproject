@@ -31,8 +31,8 @@ app.configure(function(){
   //app.set('view engine', 'mustache');
   app.set('view options', { layout: false });
   app.use(express.bodyParser());
-  app.use(express.cookieParser('shhhh, very secret'));
-  app.use(express.session({store: new RedisStore }));
+  app.use(express.cookieParser());
+  app.use(express.session({ secret: "batman", store: new RedisStore }));
   app.use(app.router);
 
 })
